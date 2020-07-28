@@ -51,11 +51,8 @@ def generate_links():
 
     
 
-
-
 def get_data():
     links= generate_links()
-    
     print(len(links))
     for link in links:
         resp = requests.get(link['url'])
@@ -70,6 +67,19 @@ def get_data():
 #print(jre.keys())
 #print(type(jre['data']))
 
-if __name__ == '__main__':
-    get_data()
+def get_data_in_physics_subj():
+    links= generate_links()
+    for link in links:
+        if link['sub'] == 'physics-astronomy':
+            resp = requests.get(link['url'])
+            print(resp.status_code)
+            print(len(resp.json()['data']))
+            return resp.json()['data']
 
+
+if __name__ == '__main__':
+    data = get_data_in_physics_subj()
+    for it in data:
+        if 'Iran' in it['country']:
+            for k, v in it.items():
+                print("%s: %s" %(k,v))
